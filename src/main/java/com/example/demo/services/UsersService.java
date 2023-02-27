@@ -3,7 +3,6 @@ package com.example.demo.services;
 import com.example.demo.models.User;
 import org.springframework.stereotype.Service;
 import com.example.demo.repositories.UsersRepository;
-
 import java.util.List;
 
 @Service

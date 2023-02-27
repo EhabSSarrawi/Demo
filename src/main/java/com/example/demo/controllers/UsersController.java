@@ -4,6 +4,7 @@ import java.util.List;
 import org.springframework.web.bind.annotation.*;
 import com.example.demo.models.User;
 import com.example.demo.services.UsersService;
+
 @RestController
 public class UsersController {
 
