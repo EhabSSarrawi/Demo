@@ -1,10 +1,16 @@
 package com.example.demo.models;
 
-import javax.persistence.Entity;
-import javax.persistence.Table;
-import javax.persistence.*;
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
 @Entity
+@AllArgsConstructor
+@Setter
+@Getter
+@ToString
 @Table(name = "users")
 public class User {
 
@@ -16,28 +22,9 @@ public class User {
     @Column(name="user_name", nullable = false, unique = true)
     private String userName;
 
-    public User(Integer id, String userName) {
-        this.id = id;
-        this.userName = userName;
-    }
-
     public User() {
 
     }
 
-    public Integer getId() {
-        return id;
-    }
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getUserName() {
-        return userName;
-    }
-
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
 }

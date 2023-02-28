@@ -1,41 +1,20 @@
 package com.example.demo.services;
 
 import com.example.demo.models.User;
-import org.springframework.stereotype.Service;
-import com.example.demo.repositories.UsersRepository;
 import java.util.List;
 
-@Service
-public class UsersService {
+public interface UsersService {
 
-    private UsersRepository userRepository;
+    public List<User> getAll();
 
-    public UsersService(UsersRepository usersRepository) {
-        this.userRepository =usersRepository;
-    }
+    public User addUser(User user);
 
-    public List<User> getAll() {
-        return userRepository.findAll();
-    }
+    public User findUser(Integer userId);
 
-    public String addUser(User user) {
-        userRepository.save(user);
-        return "success";
-    }
+    public void deleteUser(Integer userId);
 
-    public String findUser(Integer userId){
-         userRepository.findById(userId);
-         return "success";
-    }
+    public User updateUser(Integer userId, User user) throws Exception;
 
-    public String deleteUser(Integer userId){
-        userRepository.deleteById(userId);
-        return "success";
-    }
-
-    public String updateUser(User user){
-        userRepository.save(user);
-        return "success";
-    }
+    public User update1User(Integer userId, User user) throws Exception;
 
 }
