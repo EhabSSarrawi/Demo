@@ -20,7 +20,6 @@ public class UserServiceImplementation implements UsersService {
 
     public User addUser(User user) {
         return userRepository.save(user);
-
     }
 
     public User findUser(Integer userId) {
@@ -39,14 +38,12 @@ public class UserServiceImplementation implements UsersService {
 
     public User updateUser(Integer userId, User user) throws Exception {
         User existingUser = userRepository.findById(userId).orElseThrow(() -> new Exception("User not found"));
-
         existingUser.setUserName(user.getUserName());
         return userRepository.save(existingUser);
     }
 
     public User update1User(Integer userId, User user) throws Exception {
         User existUser = userRepository.findById(userId).orElseThrow(()-> new Exception("User not found"));
-
         if(user.getUserName() != null) {
             existUser.setUserName(user.getUserName());
         }
