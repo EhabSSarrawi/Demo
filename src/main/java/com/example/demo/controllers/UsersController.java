@@ -2,11 +2,10 @@ package com.example.demo.controllers;
 
 import java.util.List;
 import lombok.AllArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import com.example.demo.models.User;
 import com.example.demo.services.UsersService;
+import com.example.demo.repositories.UsersRepository;
 
 @AllArgsConstructor
 @RestController
@@ -14,13 +13,15 @@ public class UsersController {
 
     private UsersService usersService;
 
+    private UsersRepository usersRepository;
+
     @RequestMapping("/users")
     public List<User> getAllUsers() {
         return usersService.getAll();
     }
 
     @PostMapping("/users")
-    public User addOne(@RequestBody User user) {
+    public String addOne(@RequestBody User user) {
         return usersService.addUser(user);
     }
 
@@ -29,28 +30,18 @@ public class UsersController {
         return usersService.findUser(id);
     }
 
-    @PutMapping("/users/{id}")
-    public ResponseEntity<User> updateUser(@RequestBody User user, @PathVariable Integer id) {
-        try {
-            User updateUser = usersService.updateUser(id, user);
-            return ResponseEntity.ok(updateUser);
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
+    @GetMapping("/users/FirstName/{userName}")
+    public List<User> findUserName(@PathVariable String userName) {
+        return usersRepository.findByUserName(userName);
     }
 
-    @PatchMapping("/users/{id}")
-    public ResponseEntity<User> update1User(@RequestBody User user, @PathVariable Integer id) {
-        try {
-            User updateUser = usersService.updateUser(id, user);
-            return ResponseEntity.ok(updateUser);
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
+    @PutMapping("/users/{id}")
+    public User updateUser(@RequestBody User user, @PathVariable Integer id) {
+           return usersService.updateUser(id, user);
     }
 
     @DeleteMapping("/users/{id}")
     public void deleteUser(@PathVariable Integer id) {
-         usersService.deleteUser(id);
+        usersService.deleteUser(id);
     }
 }
