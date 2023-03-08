@@ -30,7 +30,7 @@ public class UsersController {
         return usersService.findUser(id);
     }
 
-    @GetMapping("/users/FirstName/{userName}")
+    @GetMapping("/users/name/{userName}")
     public List<User> findUserName(@PathVariable String userName) {
         return usersRepository.findByUserName(userName);
     }
