@@ -29,5 +29,4 @@ public class JwtServiceImp implements JwtService {
         return Boolean.parseBoolean(Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(authToken).getBody().getSubject());
     }
 
-
 }

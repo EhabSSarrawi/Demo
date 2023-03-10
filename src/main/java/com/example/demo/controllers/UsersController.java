@@ -20,11 +20,6 @@ public class UsersController {
         return usersService.getAll();
     }
 
-    @PostMapping("/users")
-    public String addOne(@RequestBody User user) {
-        return usersService.addUser(user);
-    }
-
     @GetMapping("/users/{id}")
     public User findUser(@PathVariable Integer id) {
         return usersService.findUser(id);

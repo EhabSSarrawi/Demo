@@ -7,14 +7,16 @@ public interface UsersService {
 
     List<User> getAll();
 
-    String addUser(User user);
+    User addUser(User user);
 
     User findUser(Integer userId);
 
-    List<User> findUserName(String userName, int id);
+    List<User> findUserName(String userName);
 
     void deleteUser(Integer userId);
 
     User updateUser(Integer userId, User user);
+
+    String checkUser(User user, String userName,  String password);
 
 }

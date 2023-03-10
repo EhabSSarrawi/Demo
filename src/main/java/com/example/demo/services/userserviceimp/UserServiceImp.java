@@ -3,6 +3,7 @@ package com.example.demo.services.userserviceimp;
 import com.example.demo.models.User;
 import com.example.demo.repositories.UsersRepository;
 import com.example.demo.services.JwtService;
+import com.example.demo.services.PasswordService;
 import com.example.demo.services.UsersService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -17,14 +18,26 @@ public class UserServiceImp implements UsersService {
 
     private JwtService jwtService;
 
+    private PasswordService passwordService;
+
     public List<User> getAll() {
         return userRepository.findAll();
     }
 
-    public String addUser(User user) {
-         userRepository.save(user);
-         return jwtService.generateJwtToken(user.getId());
+    public User addUser(User user) {
+        user.setPassword(passwordService.hashPassword(user.getPassword()));
+        return userRepository.save(user);
+    }
 
+    public String checkUser(User user, String userName, String password) {
+        String name = userRepository.findByUserName(userName).toString();
+        boolean check = passwordService.checkPass(user, password);
+        if (check && (name != null)) {
+            return jwtService.generateJwtToken(user.getId());
+        }
+        else {
+            return null;
+        }
     }
 
     public User findUser(Integer userId) {
@@ -32,7 +45,7 @@ public class UserServiceImp implements UsersService {
         return (User) user.get();
     }
     
-    public List<User> findUserName(String userName, int id){
+    public List<User> findUserName(String userName){
         List<User> user = userRepository.findByUserName(userName);
         return user;
     }
