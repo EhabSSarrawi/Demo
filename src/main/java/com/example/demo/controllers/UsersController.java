@@ -1,11 +1,12 @@
 package com.example.demo.controllers;
 
-import java.util.List;
 import lombok.AllArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
-import com.example.demo.models.User;
+import com.example.demo.models.AppUser;
 import com.example.demo.services.UsersService;
-import com.example.demo.repositories.UsersRepository;
 
 @AllArgsConstructor
 @RestController
@@ -13,30 +14,23 @@ public class UsersController {
 
     private UsersService usersService;
 
-    private UsersRepository usersRepository;
-
-    @RequestMapping("/users")
-    public List<User> getAllUsers() {
-        return usersService.getAll();
-    }
-
+    @PreAuthorize("hasAuthority('admin')")
     @GetMapping("/users/{id}")
-    public User findUser(@PathVariable Integer id) {
+    public AppUser findUser(@PathVariable int id) {
         return usersService.findUser(id);
     }
 
-    @GetMapping("/users/name/{userName}")
-    public List<User> findUserName(@PathVariable String userName) {
-        return usersRepository.findByUserName(userName);
+    @PreAuthorize("hasAuthority('admin') or hasAuthority('user')")
+    @PutMapping("/users")
+    public AppUser updateUser(@RequestBody AppUser user) {
+        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return usersService.updateUser(user, userDetails.getUsername());
     }
 
-    @PutMapping("/users/{id}")
-    public User updateUser(@RequestBody User user, @PathVariable Integer id) {
-           return usersService.updateUser(id, user);
-    }
-
-    @DeleteMapping("/users/{id}")
-    public void deleteUser(@PathVariable Integer id) {
-        usersService.deleteUser(id);
+    @PreAuthorize("hasAuthority('admin') or hasAuthority('user')")
+    @DeleteMapping("/users")
+    public void deleteUser() {
+        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        usersService.deleteUser(userDetails.getUsername());
     }
 }

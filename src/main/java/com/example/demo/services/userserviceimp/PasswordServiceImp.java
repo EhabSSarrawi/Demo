@@ -1,29 +1,22 @@
 package com.example.demo.services.userserviceimp;
 
-import com.example.demo.models.User;
 import com.example.demo.services.PasswordService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.JdbcTemplate;
+import lombok.AllArgsConstructor;
+import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
+@AllArgsConstructor
 public class PasswordServiceImp implements PasswordService {
-
-    @Autowired
-    private JdbcTemplate jdbcTemplate;
-
-    PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+    @Bean
+    private PasswordEncoder passwordEncoder() {
+       return new BCryptPasswordEncoder();
+    }
 
     public String hashPassword(String password) {
-        String hashedPassword = passwordEncoder.encode(password);
-        return hashedPassword;
+        return passwordEncoder().encode(password);
     }
 
-    public boolean checkPass(User user, String password) {
-        String sql = "SELECT password FROM users WHERE user_name = ? ";
-        String hashedPassword = jdbcTemplate.queryForObject(sql, new Object[] { user.getUserName() }, String.class);
-        return passwordEncoder.matches(password, hashedPassword);
-    }
 }

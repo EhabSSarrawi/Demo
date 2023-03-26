@@ -1,22 +1,17 @@
 package com.example.demo.services;
 
-import com.example.demo.models.User;
-import java.util.List;
+import com.example.demo.models.AppUser;
+import org.springframework.security.core.userdetails.UserDetailsService;
 
-public interface UsersService {
 
-    List<User> getAll();
+public interface UsersService extends UserDetailsService {
 
-    User addUser(User user);
+    AppUser addUser(AppUser user);
 
-    User findUser(Integer userId);
+    AppUser findUser(int id);
 
-    List<User> findUserName(String userName);
+    void deleteUser(String email);
 
-    void deleteUser(Integer userId);
-
-    User updateUser(Integer userId, User user);
-
-    String checkUser(User user, String userName,  String password);
+    AppUser updateUser(AppUser appUser, String email);
 
 }
